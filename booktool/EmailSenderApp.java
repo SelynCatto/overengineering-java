@@ -19,6 +19,7 @@ public class EmailSenderApp {
     private static String recipientEmail = "";
 
     public static void main(String[] args) {
+        loadConfigSettings();
         final JFrame frame = new JFrame("Taxi Verktyget");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
@@ -198,11 +199,38 @@ public class EmailSenderApp {
                 username = emailField.getText();
                 password = new String(passwordField.getPassword());
                 recipientEmail = recipientField.getText();
+
+                saveConfigSettings(username, password, recipientEmail);
+
                 configFrame.dispose();
             }
         });
 
         configFrame.add(panel);
         configFrame.setVisible(true);
+    }
+
+    private static void saveConfigSettings(String username, String password, String recipientEmail) {
+        try (FileWriter writer = new FileWriter(USER_DATA_FILE)) {
+            Properties properties = new Properties();
+            properties.setProperty("username", username);
+            properties.setProperty("password", password);
+            properties.setProperty("recipientEmail", recipientEmail);
+            properties.store(writer, "Email Configuration");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void loadConfigSettings() {
+        try (FileReader reader = new FileReader(USER_DATA_FILE)) {
+            Properties properties = new Properties();
+            properties.load(reader);
+            username = properties.getProperty("username");
+            password = properties.getProperty("password");
+            recipientEmail = properties.getProperty("recipientEmail");
+        } catch (IOException e) {
+            System.out.println("Well, something went wrong with loading configuration settings.");
+        }
     }
 }
