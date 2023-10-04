@@ -14,6 +14,10 @@ import java.util.Properties;
 public class EmailSenderApp {
     private static final String USER_DATA_FILE = "userdata.properties";
 
+    private static String username = "";
+    private static String password = "";
+    private static String recipientEmail = "";
+
     public static void main(String[] args) {
         final JFrame frame = new JFrame("Taxi Verktyget");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,7 +51,8 @@ public class EmailSenderApp {
                     finalReturnAnswer[0] = "Nej";
                 }
 
-                String message = "Från: " + from + "\n"
+                String message = "Typ: När/Anropsstyrdtrafik\n"
+                        + "Från: " + from + "\n"
                         + "Till: " + to + "\n"
                         + "Datum: " + dateTextField.getText() + "\n"
                         + "Tid: " + timeTextField.getText() + "\n"
@@ -58,7 +63,7 @@ public class EmailSenderApp {
                         + "Kund nr: " + ssnTextField.getText() + "\n"
                         + "Telefon nr: " + phoneTextField.getText();
 
-                sendEmail("bokningserviceresor@skanetrafiken.se", to, subject, message);
+                sendEmail(username, password, recipientEmail, to, subject, message);
 
                 saveUserData(nameTextField.getText(), ssnTextField.getText(), phoneTextField.getText(), from, to);
             }
@@ -75,8 +80,15 @@ public class EmailSenderApp {
             }
         });
 
+        JButton configButton = new JButton("Konfigurera");
+        configButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                configureEmailSettings();
+            }
+        });
+
         Container container = frame.getContentPane();
-        container.setLayout(new GridLayout(13, 2));
+        container.setLayout(new GridLayout(14, 2));
         container.add(new JLabel("Från:"));
         container.add(fromTextField);
         container.add(new JLabel("Till:"));
@@ -99,15 +111,12 @@ public class EmailSenderApp {
         container.add(phoneTextField);
         container.add(sendButton);
         container.add(openBrowserButton);
+        container.add(configButton);
 
         frame.setVisible(true);
     }
 
-    private static void sendEmail(String to, String from, String subject, String message) {
-        // Define your Gmail credentials, I could create a config, but I am too fucking lazy
-        String username = "not putting my";
-        String password = "details here lol";
-
+    private static void sendEmail(String username, String password, String to, String from, String subject, String message) {
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
@@ -159,7 +168,41 @@ public class EmailSenderApp {
             fromTextField.setText(properties.getProperty("from"));
             toTextField.setText(properties.getProperty("to"));
         } catch (IOException e) {
-            System.out.println("Well fuck");
+            System.out.println("Well, something went wrong with loading user data.");
         }
+    }
+
+    private static void configureEmailSettings() {
+        JFrame configFrame = new JFrame("Konfigurera E-post");
+        configFrame.setSize(300, 200);
+        configFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2));
+
+        JTextField emailField = new JTextField(username);
+        JPasswordField passwordField = new JPasswordField(password);
+        JTextField recipientField = new JTextField(recipientEmail);
+        JButton saveButton = new JButton("Spara");
+
+        panel.add(new JLabel("E-post användarnamn:"));
+        panel.add(emailField);
+        panel.add(new JLabel("E-post lösenord:"));
+        panel.add(passwordField);
+        panel.add(new JLabel("Mottagarens E-post:"));
+        panel.add(recipientField);
+        panel.add(saveButton);
+
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                username = emailField.getText();
+                password = new String(passwordField.getPassword());
+                recipientEmail = recipientField.getText();
+                configFrame.dispose();
+            }
+        });
+
+        configFrame.add(panel);
+        configFrame.setVisible(true);
     }
 }
