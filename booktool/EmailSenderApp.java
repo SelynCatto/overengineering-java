@@ -54,39 +54,28 @@ public class EmailSenderApp {
                     finalReturnAnswer[0] = "Nej";
                 }
 
+                String message = "Typ: När/Anropsstyrdtrafik\n"
+                        + "Från: " + from + "\n"
+                        + "Till: " + to + "\n"
+                        + "Datum: " + dateTextField.getText() + "\n"
+                        + "Tid: " + timeTextField.getText() + "\n"
+                        + "Returresa: " + finalReturnAnswer[0] + "\n"
+                        + "Returtid: " + returnTime.getText() + "\n"
+                        + "Passagerare: " + passengersTextField.getText() + "\n"
+                        + "Namn: " + nameTextField.getText() + "\n"
+                        + "Kund nr: " + ssnTextField.getText() + "\n"
+                        + "Telefon nr: " + phoneTextField.getText();
+
                 if(beNiceBox.isSelected()) {
-                    String message = "Hej, jag skulle vilja göra en bokning!\n\n\nTyp: När/Anropsstyrdtrafik\n"
-                            + "Från: " + from + "\n"
-                            + "Till: " + to + "\n"
-                            + "Datum: " + dateTextField.getText() + "\n"
-                            + "Tid: " + timeTextField.getText() + "\n"
-                            + "Returresa: " + finalReturnAnswer[0] + "\n"
-                            + "Returtid: " + returnTime.getText() + "\n"
-                            + "Passagerare: " + passengersTextField.getText() + "\n"
-                            + "Namn: " + nameTextField.getText() + "\n"
-                            + "Kund nr: " + ssnTextField.getText() + "\n"
-                            + "Telefon nr: " + phoneTextField.getText() + "\n\n\nMvh " + nameTextField.getText();
+                    message = "Hej, jag skulle vilja göra en bokning!\n\n\n"
+                            + message
+                            + "\n\n\nMvh " + nameTextField.getText();
 
-                    sendEmail(username, password, recipientEmail, to, subject, message);
-
-                    saveUserData(nameTextField.getText(), ssnTextField.getText(), phoneTextField.getText(), from, to);
-                } else {
-                    String message = "Typ: När/Anropsstyrdtrafik\n"
-                            + "Från: " + from + "\n"
-                            + "Till: " + to + "\n"
-                            + "Datum: " + dateTextField.getText() + "\n"
-                            + "Tid: " + timeTextField.getText() + "\n"
-                            + "Returresa: " + finalReturnAnswer[0] + "\n"
-                            + "Returtid: " + returnTime.getText() + "\n"
-                            + "Passagerare: " + passengersTextField.getText() + "\n"
-                            + "Namn: " + nameTextField.getText() + "\n"
-                            + "Kund nr: " + ssnTextField.getText() + "\n"
-                            + "Telefon nr: " + phoneTextField.getText();
-
-                    sendEmail(username, password, recipientEmail, to, subject, message);
-
-                    saveUserData(nameTextField.getText(), ssnTextField.getText(), phoneTextField.getText(), from, to);
                 }
+
+                sendEmail(username, password, recipientEmail, to, subject, message);
+
+                saveUserData(nameTextField.getText(), ssnTextField.getText(), phoneTextField.getText(), from, to);
             }
         });
 
