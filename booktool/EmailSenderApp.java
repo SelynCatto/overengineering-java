@@ -13,6 +13,7 @@ import java.util.Properties;
 
 public class EmailSenderApp {
     private static final String USER_DATA_FILE = "userdata.properties";
+    private static final String EMAIL_CONFIG_FILE = "config.properties";
 
     private static String username = "";
     private static String password = "";
@@ -88,8 +89,16 @@ public class EmailSenderApp {
             }
         });
 
+        JButton exitButton = new JButton("Stäng");
+        exitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                saveUserData(nameTextField.getText(), ssnTextField.getText(), phoneTextField.getText(), fromTextField.getText(), toTextField.getText());
+                System.exit(0);
+            }
+        });
+
         Container container = frame.getContentPane();
-        container.setLayout(new GridLayout(14, 2));
+        container.setLayout(new GridLayout(15, 2));
         container.add(new JLabel("Från:"));
         container.add(fromTextField);
         container.add(new JLabel("Till:"));
@@ -113,6 +122,7 @@ public class EmailSenderApp {
         container.add(sendButton);
         container.add(openBrowserButton);
         container.add(configButton);
+        container.add(exitButton);
 
         frame.setVisible(true);
     }
@@ -211,7 +221,7 @@ public class EmailSenderApp {
     }
 
     private static void saveConfigSettings(String username, String password, String recipientEmail) {
-        try (FileWriter writer = new FileWriter(USER_DATA_FILE)) {
+        try (FileWriter writer = new FileWriter(EMAIL_CONFIG_FILE)) {
             Properties properties = new Properties();
             properties.setProperty("username", username);
             properties.setProperty("password", password);
@@ -223,7 +233,7 @@ public class EmailSenderApp {
     }
 
     private static void loadConfigSettings() {
-        try (FileReader reader = new FileReader(USER_DATA_FILE)) {
+        try (FileReader reader = new FileReader(EMAIL_CONFIG_FILE)) {
             Properties properties = new Properties();
             properties.load(reader);
             username = properties.getProperty("username");
