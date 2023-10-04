@@ -65,7 +65,7 @@ public class EmailSenderApp {
                             + "Passagerare: " + passengersTextField.getText() + "\n"
                             + "Namn: " + nameTextField.getText() + "\n"
                             + "Kund nr: " + ssnTextField.getText() + "\n"
-                            + "Telefon nr: " + phoneTextField.getText();
+                            + "Telefon nr: " + phoneTextField.getText() + "\n\n\nMvh " + nameTextField.getText();
 
                     sendEmail(username, password, recipientEmail, to, subject, message);
 
