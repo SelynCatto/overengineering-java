@@ -35,6 +35,7 @@ public class EmailSenderApp {
         JTextField nameTextField = new JTextField(20);
         JTextField ssnTextField = new JTextField(20);
         JTextField phoneTextField = new JTextField(20);
+        JCheckBox beNiceBox = new JCheckBox("Ja/Nej");
 
         loadUserData(nameTextField, ssnTextField, phoneTextField, fromTextField, toTextField);
 
@@ -53,21 +54,39 @@ public class EmailSenderApp {
                     finalReturnAnswer[0] = "Nej";
                 }
 
-                String message = "Typ: När/Anropsstyrdtrafik\n"
-                        + "Från: " + from + "\n"
-                        + "Till: " + to + "\n"
-                        + "Datum: " + dateTextField.getText() + "\n"
-                        + "Tid: " + timeTextField.getText() + "\n"
-                        + "Returresa: " + finalReturnAnswer[0] + "\n"
-                        + "Returtid: " + returnTime.getText() + "\n"
-                        + "Passagerare: " + passengersTextField.getText() + "\n"
-                        + "Namn: " + nameTextField.getText() + "\n"
-                        + "Kund nr: " + ssnTextField.getText() + "\n"
-                        + "Telefon nr: " + phoneTextField.getText();
+                if(beNiceBox.isSelected()) {
+                    String message = "Hej, jag skulle vilja göra en bokning!\n\n\nTyp: När/Anropsstyrdtrafik\n"
+                            + "Från: " + from + "\n"
+                            + "Till: " + to + "\n"
+                            + "Datum: " + dateTextField.getText() + "\n"
+                            + "Tid: " + timeTextField.getText() + "\n"
+                            + "Returresa: " + finalReturnAnswer[0] + "\n"
+                            + "Returtid: " + returnTime.getText() + "\n"
+                            + "Passagerare: " + passengersTextField.getText() + "\n"
+                            + "Namn: " + nameTextField.getText() + "\n"
+                            + "Kund nr: " + ssnTextField.getText() + "\n"
+                            + "Telefon nr: " + phoneTextField.getText();
 
-                sendEmail(username, password, recipientEmail, to, subject, message);
+                    sendEmail(username, password, recipientEmail, to, subject, message);
 
-                saveUserData(nameTextField.getText(), ssnTextField.getText(), phoneTextField.getText(), from, to);
+                    saveUserData(nameTextField.getText(), ssnTextField.getText(), phoneTextField.getText(), from, to);
+                } else {
+                    String message = "Typ: När/Anropsstyrdtrafik\n"
+                            + "Från: " + from + "\n"
+                            + "Till: " + to + "\n"
+                            + "Datum: " + dateTextField.getText() + "\n"
+                            + "Tid: " + timeTextField.getText() + "\n"
+                            + "Returresa: " + finalReturnAnswer[0] + "\n"
+                            + "Returtid: " + returnTime.getText() + "\n"
+                            + "Passagerare: " + passengersTextField.getText() + "\n"
+                            + "Namn: " + nameTextField.getText() + "\n"
+                            + "Kund nr: " + ssnTextField.getText() + "\n"
+                            + "Telefon nr: " + phoneTextField.getText();
+
+                    sendEmail(username, password, recipientEmail, to, subject, message);
+
+                    saveUserData(nameTextField.getText(), ssnTextField.getText(), phoneTextField.getText(), from, to);
+                }
             }
         });
 
@@ -98,7 +117,7 @@ public class EmailSenderApp {
         });
 
         Container container = frame.getContentPane();
-        container.setLayout(new GridLayout(15, 2));
+        container.setLayout(new GridLayout(16, 2));
         container.add(new JLabel("Från:"));
         container.add(fromTextField);
         container.add(new JLabel("Till:"));
@@ -119,6 +138,8 @@ public class EmailSenderApp {
         container.add(ssnTextField);
         container.add(new JLabel("Telefon nr:"));
         container.add(phoneTextField);
+        container.add(new JLabel("Trevlig:"));
+        container.add(beNiceBox);
         container.add(sendButton);
         container.add(openBrowserButton);
         container.add(configButton);
