@@ -106,7 +106,7 @@ public class EmailSenderApp {
         });
 
         Container container = frame.getContentPane();
-        container.setLayout(new GridLayout(16, 2));
+        container.setLayout(new GridLayout(0, 2));
         container.add(new JLabel("Från:"));
         container.add(fromTextField);
         container.add(new JLabel("Till:"));
@@ -199,7 +199,7 @@ public class EmailSenderApp {
         configFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2));
+        panel.setLayout(new GridLayout(0, 2));
 
         JTextField emailField = new JTextField(username);
         JPasswordField passwordField = new JPasswordField(password);
@@ -212,6 +212,7 @@ public class EmailSenderApp {
         panel.add(passwordField);
         panel.add(new JLabel("Mottagarens E-post:"));
         panel.add(recipientField);
+        panel.add(new JLabel());
         panel.add(saveButton);
 
         saveButton.addActionListener(new ActionListener() {
